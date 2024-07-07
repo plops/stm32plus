@@ -1,0 +1,149 @@
+@startuml
+'!include <C4/C4_Context>
+
+'title Class Diagram for Timer Features (STM32F4)
+
+hide stereotype
+skinparam linetype ortho
+
+class Timer {
+    + enablePeripheral()
+    + disablePeripheral()
+    + getPeriod()
+    + getClock()
+    + getCounterMax()
+    + getCounter()
+    + setClock(uint32_t clock)
+    + setCounter(uint32_t counter)
+    + setPrescaler(uint16_t prescaler, uint16_t reloadMode)
+    + initialiseTimeBase(uint32_t period, uint16_t prescaler, uint16_t clockDivision, uint16_t counterMode)
+    + setTimeBaseByFrequency(uint32_t frequency, uint32_t arr, uint16_t counterMode)
+    + deinitialise()
+}
+
+class TimerPeripheral {
+    + setPrescalerImmediately(uint16_t value)
+    + setPrescalerAtUpdate(uint16_t value)
+}
+
+class AdvancedControlTimer {
+    + initialiseTimeBaseWithRepeat(uint16_t period, uint16_t prescaler, uint16_t clockDivision, uint16_t counterMode, uint8_t repeatCount)
+    + setTimeBaseByFrequencyWithRepeat(uint32_t frequency, uint16_t arr, uint16_t counterMode, uint8_t repeatCount)
+}
+
+class GeneralPurposeTimer {
+}
+
+class BasicTimer {
+}
+
+class TimerFeatureBase {
+}
+
+class TimerInterruptFeature {
+    + enableInterrupts(uint16_t interruptMask)
+    + disableInterrupts(uint16_t interruptMask)
+    + clearPendingInterruptsFlag(uint16_t interruptMask)
+}
+
+class TimerChannelFeatureBase {
+    + initialise()
+    + calculateFrequency(uint32_t capture1, uint32_t capture2)
+}
+
+class TimerChannel1Feature {
+    + getCapture()
+    + initCompareForPwmOutput(uint8_t initialDutyCycle, uint16_t ocMode, uint16_t ocPolarity)
+    + initCompare(uint32_t compareValue, uint16_t ocMode, uint16_t polarity, uint16_t preload)
+    + initCapture(uint16_t polarity, uint16_t selection, uint16_t prescaler, uint16_t filter, uint16_t timerPrescaler)
+    + setCompare(uint32_t compare)
+    + setDutyCycle(uint8_t dutyCycle)
+}
+
+class TimerChannel2Feature {
+    + getCapture()
+    + initCompareForPwmOutput(uint8_t initialDutyCycle, uint16_t ocMode, uint16_t ocPolarity)
+    + initCompare(uint32_t compareValue, uint16_t ocMode, uint16_t polarity, uint16_t preload)
+    + initCapture(uint16_t polarity, uint16_t selection, uint16_t prescaler, uint16_t filter, uint16_t timerPrescaler)
+    + setCompare(uint32_t compare)
+    + setDutyCycle(uint8_t dutyCycle)
+}
+
+class TimerChannel3Feature {
+    + getCapture()
+    + initCompareForPwmOutput(uint8_t initialDutyCycle, uint16_t ocMode, uint16_t ocPolarity)
+    + initCompare(uint32_t compareValue, uint16_t ocMode, uint16_t polarity, uint16_t preload)
+    + initCapture(uint16_t polarity, uint16_t selection, uint16_t prescaler, uint16_t filter, uint16_t timerPrescaler)
+    + setCompare(uint32_t compare)
+    + setDutyCycle(uint8_t dutyCycle)
+}
+
+class TimerChannel4Feature {
+    + getCapture()
+    + initCompareForPwmOutput(uint8_t initialDutyCycle, uint16_t ocMode, uint16_t ocPolarity)
+    + initCompare(uint32_t compareValue, uint16_t ocMode, uint16_t polarity, uint16_t preload)
+    + initCapture(uint16_t polarity, uint16_t selection, uint16_t prescaler, uint16_t filter, uint16_t timerPrescaler)
+    + setCompare(uint32_t compare)
+    + setDutyCycle(uint8_t dutyCycle)
+}
+
+class TimerExternalMode1ClockFeature {
+}
+
+class TimerInternalTriggerClockFeature {
+}
+
+class TimerMasterFeature {
+    + enableMasterFeature()
+}
+
+class TimerSlaveFeature {
+    + enableSlaveFeature()
+}
+
+class TimerEncoderFeature {
+    + initialiseEncoderCounter(uint32_t period)
+    + manageEncoderReset(ExtiPeripheralBase& exti, uint32_t resetValue)
+}
+
+class TimerBreakFeature {
+    + enableMainOutput()
+    + disableMainOutput()
+    + enableAutomaticOutput()
+    + disableAutomaticOutput()
+    + setBreakPolarity(BreakPolarity polarity)
+    + enableBreak()
+    + disableBreak()
+    + enableRunModeOffState()
+    + disableRunModeOffState()
+    + enableIdleModeOffState()
+    + disableIdleModeOffState()
+    + setDeadTimeGenerator(uint8_t dtg)
+}
+
+
+TimerPeripheral <|-- AdvancedControlTimer
+TimerPeripheral <|-- GeneralPurposeTimer
+TimerPeripheral <|-- BasicTimer
+Timer <|.. TimerPeripheral
+TimerFeatureBase <|.. TimerInterruptFeature
+TimerFeatureBase <|.. TimerChannelFeatureBase
+TimerChannelFeatureBase <|-- TimerChannel1Feature
+TimerChannelFeatureBase <|-- TimerChannel2Feature
+TimerChannelFeatureBase <|-- TimerChannel3Feature
+TimerChannelFeatureBase <|-- TimerChannel4Feature
+TimerFeatureBase <|.. TimerExternalMode1ClockFeature
+TimerFeatureBase <|.. TimerInternalTriggerClockFeature
+TimerFeatureBase <|.. TimerMasterFeature
+TimerFeatureBase <|.. TimerSlaveFeature
+TimerFeatureBase <|.. TimerEncoderFeature
+TimerFeatureBase <|.. TimerBreakFeature
+
+@enduml
+
+
+'This diagram shows the inheritance hierarchy of the timer features. Some notes:
+
+'- Concrete timer classes (e.g. `Timer1`) inherit from the base classes and then any number of the feature classes.
+'- The channel features inherit from `TimerChannelFeatureBase` and then any number of the channel configuration classes, such as `TimerChannelOCModeFeature`
+'- The `TimerInterruptFeatureEnabler` class is intentionally omitted because its only purpose is to force linkage of the IRQ handlers and has no runtime impact.

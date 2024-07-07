@@ -34,3 +34,5 @@ cat 01a_files.txt | while read file; do
     cat $file
     echo "// END FILE: $file"
 done > 01b_all_files.txt
+
+# This is 1.2M tokens
