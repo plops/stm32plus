@@ -324,3 +324,187 @@ The timers are incredibly flexible and powerful peripherals that can be used for
 Write section 7.
 
 # Response:
+
+## 7. Examples
+
+The `/examples` directory contains a comprehensive set of examples demonstrating various features and peripherals supported by stm32plus. Each example resides in its own subdirectory and follows a consistent structure.
+
+### General Example Structure
+
+Each example directory includes:
+
+- **Main Example Source Code:** This file (`*.cpp`) contains the core logic and functionality of the example. It demonstrates the specific peripheral or feature being highlighted.
+- **System Subdirectory:** This directory contains the startup and initialization code necessary for the chosen MCU. It includes:
+    - `System.c`: System clock configuration, interrupt vector table, and low-level initialization.
+    - `Linker.ld`: Linker script defining memory layout.
+    - `LibraryHacks.cpp` (optional): Hacks for specific library behaviour, like re-entrant heap.
+
+### Notable Examples
+
+Below is a brief description of some notable examples, grouped by functionality:
+
+#### Basic Peripherals
+
+- **`blink`:** 
+    - Blinks an LED using GPIO and the SysTick timer.
+    - Demonstrates basic GPIO control and millisecond delays.
+    - Compatible with all supported MCUs.
+- **`button`:**
+    - Demonstrates debouncing and auto-repeating push buttons using the `PushButton` and `AutoRepeatPushButton` classes.
+    - Shows how to handle button presses and releases.
+- **`timer_gpio_out`:**
+    - Generates a 1Hz toggle signal on a GPIO pin using a timer's output compare functionality.
+    - Illustrates basic timer configuration and output compare.
+- **`timer_dual_gpio_out`:**
+    - Outputs two out-of-phase 1Hz toggle signals on different GPIO pins using two timer channels.
+    - Demonstrates multi-channel timer usage.
+- **`timer_pwm_gpio_out`:**
+    - Generates a PWM signal on a GPIO pin using a timer's PWM mode.
+    - Shows how to control the PWM duty cycle.
+- **`timer_dual_pwm_gpio_out`:**
+    - Outputs two PWM signals with complementary duty cycles on different GPIO pins using two timer channels.
+    - Illustrates controlling multiple PWM outputs.
+- **`timer_interrupts`:**
+    - Uses a timer's update interrupt to toggle an LED, demonstrating timer interrupts.
+    - Shows how to handle timer interrupts and manage LED state.
+- **`timer_master_slave`:**
+    - Configures two timers, one as a master and the other as a slave, using the master's output compare signal to control the slave's operation.
+    - Illustrates timer synchronization and master-slave configuration.
+- **`timer_input_capture`:**
+    - Measures the frequency of an external signal using a timer's input capture functionality and interrupts.
+    - Demonstrates capturing external signals and calculating frequencies.
+- **`timer_encoder`:**
+    - Uses a timer's encoder mode to track the rotation of a rotary encoder.
+    - Shows how to configure the encoder mode, handle encoder interrupts, and manage the counter.
+- **`timer_pwm_break`:**
+    - Generates a PWM signal and demonstrates the timer's break input feature.
+    - Illustrates how to configure the break input and handle break interrupts.
+
+#### Advanced Peripherals
+
+- **`usart_send_sync`:**
+    - Sends a string over USART using a polling output stream.
+    - Demonstrates synchronous USART transmission.
+- **`usart_receive_sync`:**
+    - Receives data over USART using a polling input stream.
+    - Shows how to receive data synchronously.
+- **`usart_send_dma`:**
+    - Transmits data over USART using DMA.
+    - Illustrates asynchronous USART transmission with DMA.
+- **`usart_receive_dma`:**
+    - Receives data over USART using DMA.
+    - Demonstrates asynchronous USART reception with DMA.
+- **`usart_send_interrupts`:**
+    - Sends data over USART using interrupts.
+    - Shows how to use TXE interrupts for asynchronous transmission.
+- **`usart_receive_interrupts`:**
+    - Receives data over USART using interrupts.
+    - Demonstrates using RXNE interrupts for asynchronous reception.
+- **`usart_send_dma_interrupts`:**
+    - Sends multiple data sequences over USART using DMA and interrupts.
+    - Illustrates managing multiple DMA transfers with interrupt-driven sequencing.
+- **`i2c_at24c32`:**
+    - Communicates with an AT24C32 EEPROM over I2C using polling.
+    - Demonstrates I2C master mode and EEPROM read/write.
+- **`i2c_cs43l22`:**
+    - Controls a CS43L22 DAC over I2C and streams audio data over I2S.
+    - Illustrates I2C and I2S usage, including interrupt-driven I2S data transfer.
+- **`cs43l22_beep`:**
+    - Sounds the CS43L22's internal beep tone using I2C control and a continuous null I2S data stream.
+    - Demonstrates controlling specific features of a peripheral with I2C.
+- **`adc_single`:**
+    - Performs a synchronous single-channel ADC conversion.
+    - Shows basic ADC configuration and reading conversion results.
+- **`adc_single_interrupts`:**
+    - Uses interrupts to signal the end of an ADC conversion.
+    - Demonstrates ADC interrupt handling.
+- **`adc_single_timer_interrupts`:**
+    - Triggers ADC conversions using a timer's update event and handles conversion completion with interrupts.
+    - Illustrates timer-triggered ADC conversions and interrupt synchronization.
+- **`adc_single_dma_multichan`:**
+    - Converts multiple ADC channels in scan mode using DMA to transfer results to SRAM and interrupts to signal completion.
+    - Demonstrates multi-channel ADC conversion with DMA and interrupt handling.
+- **`adc_multi_dma_multichan`:**
+    - Uses two ADCs in multi-mode to simultaneously convert multiple channels, transferring results to SRAM with DMA and handling completion with interrupts.
+    - Illustrates advanced ADC multi-mode configuration and DMA usage.
+- **`adc_analog_watchdog`:**
+    - Configures the analog watchdog to monitor an ADC channel for exceeding defined voltage thresholds, triggering an interrupt if a violation occurs.
+    - Shows how to configure the analog watchdog and handle its interrupts.
+- **`dac_circular`:**
+    - Uses DMA in circular mode to continuously output a waveform on a DAC channel, with a timer triggering conversions.
+    - Demonstrates DAC waveform generation with DMA and timer synchronization.
+- **`dac_noise`:**
+    - Generates a pseudo-random noise signal on a DAC channel using the peripheral's built-in noise generator.
+    - Illustrates using the DAC's internal noise generation capability.
+- **`dac_triangle`:**
+    - Outputs a triangular wave on a DAC channel, using a timer to trigger conversions and a base level offset.
+    - Demonstrates DAC waveform generation with timer-triggered conversions and offset adjustment.
+- **`flash_internal_settings`:**
+    - Saves application settings to the internal flash memory, utilizing wear levelling to prolong flash life.
+    - Shows how to use the `InternalFlashSettingsStorage` template to manage configuration settings.
+- **`flash_spi_program`:**
+    - Programs a SPI flash memory device from files stored on an SD card.
+    - Demonstrates SPI flash programming and using the `StandardSpiFlashDevice` template.
+- **`flash_spi_reader`:**
+    - Reads JPEG files from SPI flash memory and displays them on an LCD.
+    - Illustrates SPI flash reading and JPEG decoding.
+- **`fsmc_sram`:**
+    - Tests SRAM memory connected to the FSMC, both through direct access and stream operations.
+    - Demonstrates FSMC SRAM configuration and usage.
+- **`sdio`:**
+    - Performs basic SD card operations: erasing, writing, and reading blocks using DMA and interrupts.
+    - Shows how to use the `SdioDmaSdCard` class for efficient SD card access.
+- **`fatfs_iterate`:**
+    - Iterates over directories and files on an SD card using the FAT filesystem driver.
+    - Demonstrates accessing file system information and navigating directories.
+- **`fatfs_reader`:**
+    - Reads a text file from an SD card using the FAT filesystem driver and outputs its content to USART.
+    - Illustrates reading files from a file system.
+- **`fatfs_writer`:**
+    - Creates a file on an SD card, writes data to it, and then reads it back and outputs to USART.
+    - Demonstrates creating, writing, and reading files on a file system.
+- **`debug_semihosting`:**
+    - Integrates semihosting capabilities into the blink example, allowing debug messages to be sent to the host console.
+    - Shows how to use semihosting for debugging.
+
+#### Networking Examples
+
+- **`net_dhcp`:**
+    - Uses the DHCP client to obtain network configuration information.
+    - Demonstrates automatic DHCP acquisition and lease renewal.
+- **`net_dns`:**
+    - Performs a DNS lookup for a hostname, demonstrating the DNS client.
+- **`net_llip`:**
+    - Uses the Link Local IP client to automatically obtain an unused IP address from the 169.254/16 range.
+    - Shows how to handle address collisions and notification events.
+- **`net_ping_client`:**
+    - Sends periodic ICMP echo requests (pings) to a remote host.
+    - Demonstrates ICMP echo request/reply and link status change notifications.
+- **`net_udp_send`:**
+    - Sends UDP datagrams to a remote host.
+- **`net_udp_receive`:**
+    - Receives UDP datagrams synchronously, demonstrating the UDP client.
+- **`net_udp_receive_async`:**
+    - Receives UDP datagrams asynchronously through event subscriptions, showcasing efficient data handling.
+- **`net_tcp_client`:**
+    - Connects to a remote TCP echo server and sends a line of text, receiving the reversed text back.
+    - Demonstrates a simple TCP client implementation.
+- **`net_tcp_client_async`:**
+    - Connects to a remote TCP server asynchronously, handling connection state change notifications and data transfer.
+    - Shows how to manage asynchronous TCP connections.
+- **`net_tcp_server`:**
+    - Implements a TCP echo server that echoes back received lines of text.
+    - Demonstrates a simple TCP server implementation using `TcpServer` and `TcpConnectionArray`.
+- **`net_web_client`:**
+    - Uses the `HttpClient` class to retrieve a web page from a remote server.
+    - Shows how to send HTTP requests, parse responses, and handle data.
+- **`net_web_server`:**
+    - Implements a simple web server that serves static files from an SD card using the FAT filesystem driver.
+    - Demonstrates using `TcpServer` and `HttpServerConnection` to handle web requests.
+- **`net_web_pframe`:**
+    - Combines various components to create a picture frame that downloads JPEG images from the internet and displays them on an LCD.
+    - Showcases a more complex application using multiple peripherals and features of stm32plus.
+
+### Conclusion
+
+The examples are intended to be a starting point for your own projects. They showcase the various components and features of stm32plus, offering clear and concise demonstrations that you can adapt and modify to suit your specific needs. The code is extensively commented, providing insights into the functionality and usage of the library.
